@@ -1,0 +1,40 @@
+#include<iostream>
+#include<thread>
+using namespace std;
+
+bool flag[2];
+int turn;
+int number=1;
+void peterson_print(int id)
+{
+    int other_id = 1- id;
+    while (number <=20)
+    {
+        flag[id] = true;
+        turn = other_id;
+        while(flag[other_id] && turn==other_id)
+        {
+
+        }
+
+    
+        if((id==0 && number%2==1)||(id==1 && number %2 ==0))
+        {
+            cout << "Thread " << id << " Prints: " << number <<endl;
+        }
+        number++;
+        flag[id]=false;
+    }
+}
+int main()
+{
+    flag[0]=false;
+    flag[1]=false;
+    turn=0;
+    thread t1(peterson_print,0);
+    thread t2(peterson_print,1);
+    t1.join();
+    t2.join();
+    return 0;
+}
+
