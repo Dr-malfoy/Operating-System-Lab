@@ -1,0 +1,56 @@
+#include<iostream>
+using namespace std;
+int main()
+{
+    int n;
+    cout << "Enter processes: ";
+    cin >> n;
+    int p[n], at[n], bt[n], ct[n], tat[n], wt[n];
+    for(int i=0; i<n; i++)
+    {
+        cout<<"Process " << i  << " Arrival Time : " ;
+        cin >> at[i];
+        cout<<"Process " << i << " Burst Time : " ;
+        cin >> bt[i];
+
+    }
+
+    for(int i=0; i<n; i++)
+    {
+        for(int j=0; j<n; j++)
+        {
+            if(at[j]<at[i])
+            {
+                swap(p[i], p[j]);
+                swap(at[j],at[i]);
+                swap(bt[j],bt[i]);
+            }
+        }
+    }
+
+    ct[0]=at[0]+bt[0];
+    tat[0]=ct[0]-at[0];
+    wt[0]=tat[0]-bt[0];
+
+    for(int i=0; i<n; i++)
+    {
+        for(int j=0; j<n; j++)
+        {
+            if(bt[j]<bt[i])
+            {
+                ct[j]=ct[j-1]+bt[j];
+            }
+        }
+        ct[i]=ct[i-1]+bt[i];
+        tat[i]=ct[i]-at[i];
+        wt[i]=tat[i]-bt[i];
+    }
+    cout << "\nProcess\tAT\tBT\tCT\tTAT\tWT\n";
+    
+    for(int i=0; i<n; i++)
+    {
+        cout <<"P"<< i <<"\t"<<at[i] <<"\t"<<bt[i] <<"\t"<<ct[i] 
+        <<"\t"<<tat[i] <<"\t"<<wt[i] <<"\t" << endl;
+    }
+return 0;
+}
