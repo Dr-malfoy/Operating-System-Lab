@@ -1,0 +1,56 @@
+#include <iostream>
+#include <unistd.h>
+#include <sys/wait.h>
+using namespace std;
+
+int main()
+{
+    int n;
+    cout << "How many numbers: ";
+    cin >> n;
+
+    int sumeven = 0, sumodd = 0;
+    int arr[n];
+
+    cout << "Enter numbers: ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> arr[i];
+    }
+
+    pid_t pid = fork();
+
+    if (pid > 0) 
+    {
+        for (int i = 0; i < n; i++)
+        {
+            if (arr[i] % 2 == 0)
+            {
+                cout << "Parent (Even): " << arr[i] << endl;
+                sumeven += arr[i];
+            }
+        }
+
+        wait(NULL); 
+        cout << "Parent: Sum of even numbers = " << sumeven << endl;
+    }
+    else if (pid == 0)  
+    {
+        for (int i = 0; i < n; i++)
+        {
+            if (arr[i] % 2 != 0)
+            {
+                cout << "Child (Odd): " << arr[i] << endl;
+                sumodd += arr[i];
+            }
+        }
+
+        cout << "Child: Sum of odd numbers = " << sumodd << endl;
+    }
+    else
+    {
+        cout << "Fork failed!" << endl;
+    }
+
+    return 0;
+}
