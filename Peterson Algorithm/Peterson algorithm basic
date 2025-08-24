@@ -1,0 +1,30 @@
+#include<iostream>
+#include<thread>
+using namespace std;
+bool flag[2];
+int turn;
+int number=1;
+void peterson(int id)
+{
+    int other=1-id;
+    while(number<=5)
+    {
+        flag[id]=true; 
+        turn=other;
+        while(flag[other]&&turn==other);
+        //critical dection
+        cout << "thread " << id <<endl;
+        flag[id]=false;
+        number++;
+    }
+}
+int main()
+{
+    flag[0]=false;
+    flag[1]=false;
+    turn=0;
+    thread t1(peterson,0);
+    thread t2(peterson,1);
+    t1.join();
+    t2.join();
+}
