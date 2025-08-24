@@ -1,0 +1,50 @@
+#include<iostream>
+#include<thread>
+using namespace std;
+
+int even=0;
+int odd=1;
+int number=1;
+ void wait(int *s)
+ {
+    while(*s<=0);
+    (*s)--;
+ }
+ void signal(int *s)
+ {
+    (*s)++;
+ }
+ void process0()
+ {
+    while(number<=19)
+    {
+        wait(&odd);
+        if(number<=19)
+        {
+            cout << "Process 0 " << number << endl;
+            number ++; 
+        }
+        signal(&even);
+    }
+ }
+void process1()
+ {
+    while(number<=20)
+    {
+        wait(&even);
+        if(number<=20)
+        {
+            cout << "Process 1 " << number << endl;
+            number ++; 
+        }
+        signal(&odd);
+    }
+ }
+ int main()
+ {
+    thread t1(process0);
+    thread t2(process1);
+    t1.join();
+    t2.join();
+    return 0;
+ }
